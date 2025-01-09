@@ -2,6 +2,10 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+const path = require("path");
+
+const { checkAndCreateConfig } = require(path.join(app.getAppPath(), "../renderer/src/utils/fileManager"));
+
 
 // Recarregamento automático para o processo principal (desenvolvimento apenas)
 if (process.env.NODE_ENV === 'development') {
@@ -19,8 +23,11 @@ function createWindow() {
     height: 670,
     show: false,
     autoHideMenuBar: true,
+    icon: join(__dirname, "../../build/icon.ico"),
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
@@ -43,6 +50,8 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
+
+
   // Intercept navigation in production to handle React routes
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (!url.startsWith('http')) {
@@ -50,6 +59,16 @@ function createWindow() {
       mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     }
   })
+
+  ipcMain.handle("check-and-create-config", () => {
+    console.log("Evento 'check-and-create-config' invocado"); // Loga quando o evento é chamado
+    return checkAndCreateConfig();
+  });
+  
+  app.whenReady().then(() => {
+    console.log("App iniciado, registrando eventos IPC...");
+  });
+  
 
   // Intercept external links
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
