@@ -4,6 +4,7 @@ import TimePicker from 'react-time-picker';
 import { useState } from "react";
 import 'react-time-picker/dist/TimePicker.css';
 import SaveAlert from "../components/buttons/SaveAlert";
+import AddAudioButton from "../components/buttons/AddAudioButton";
 
 export default function AddAlert() {
   const [time, setTime] = useState ('10:00');
@@ -17,6 +18,7 @@ export default function AddAlert() {
           disableClock={true}
         />
       </div>
+      <AddAudioButton />
       <div className="buttons-pages-container buttons-container-row">
         <SaveAlert time={time}/>
         <BackButton/>

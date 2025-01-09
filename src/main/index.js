@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { setupJsonHandlers } from './jsonHandler';
 
 // Recarregamento automático para o processo principal (desenvolvimento apenas)
 if (process.env.NODE_ENV === 'development') {
@@ -22,8 +23,8 @@ function createWindow() {
     icon: join(__dirname, "../../build/icon.ico"),
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
@@ -32,6 +33,9 @@ function createWindow() {
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
+
+  // Configura os manipuladores de eventos
+setupJsonHandlers();
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
