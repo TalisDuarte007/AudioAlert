@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 function createWindow() {
   // Criação da janela principal
   mainWindow = new BrowserWindow({
-    width: 900,
+    width: 800,
     height: 670,
     show: false,
     autoHideMenuBar: true,
@@ -32,6 +32,9 @@ function createWindow() {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
     },
+    minimizable: false, // Desabilita o botão de minimizar
+    maximizable: false, // Desabilita o botão de maximizar
+    resizable: false, // Bloqueia o redimensionamento da janela
   });
 
   mainWindow.on('ready-to-show', () => {
