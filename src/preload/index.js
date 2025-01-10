@@ -10,6 +10,10 @@ contextBridge.exposeInMainWorld('audioAlertApi', {
   saveToJSON: (data) => ipcRenderer.send('save-to-json', data),
 });
 
+contextBridge.exposeInMainWorld('openDialogApi', {
+  selectFile: () => ipcRenderer.invoke('dialog:openFile'), // Usamos `invoke` para enviar e receber a resposta
+});
+
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.

@@ -1,4 +1,17 @@
 {
-  "alarms": [],
+  "alarms": [
+    {
+      "time": "20:55",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "",
+        "Seg",
+        "Ter",
+        "Qua",
+        "Qui",
+        "Sex"
+      ]
+    }
+  ],
   "promo_alarms": []
 }

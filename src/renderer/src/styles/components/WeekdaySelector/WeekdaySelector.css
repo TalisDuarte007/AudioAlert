@@ -1,0 +1,16 @@
+.weekday-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .weekday-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  input[type="checkbox"] {
+    transform: scale(1.2);
+  }
+  
