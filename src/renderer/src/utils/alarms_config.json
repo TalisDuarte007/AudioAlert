@@ -4,14 +4,134 @@
       "time": "20:55",
       "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
       "days": [
-        "",
         "Seg",
         "Ter",
         "Qua",
         "Qui",
         "Sex"
       ]
+    },
+    {
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Dom"
+      ]
+    },
+    {
+      "time": "23:05",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:08",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:19",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:21",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:26",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:27",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\FORTUNA.mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:44",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:48",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:49",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb",
+        "Sex"
+      ]
+    },
+    {
+      "time": "23:52",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\Cherish (My Love).mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:53",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\FORTUNA.mp3",
+      "days": [
+        "Sáb"
+      ]
+    },
+    {
+      "time": "23:56",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\FORTUNA.mp3",
+      "days": [
+        "Sex"
+      ]
+    },
+    {
+      "time": "23:57",
+      "audioPath": "E:\\Dev\\download-youtube-mp3\\musics\\FORTUNA.mp3",
+      "days": [
+        "Sáb"
+      ]
     }
   ],
-  "promo_alarms": []
+  "promo_alarms": [
+    {
+      "audioPath": "E:\\Dev\\announcements\\promo1.mp3",
+      "interval": 30,
+      "days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "timeRanges": [
+        {
+          "start": "05:00",
+          "end": "12:30"
+        },
+        {
+          "start": "16:00",
+          "end": "21:00"
+        }
+      ]
+    }
+  ]
 }

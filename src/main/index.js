@@ -2,9 +2,11 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
-import { setupJsonHandlers } from './jsonHandler';
-import { setupDialogHandlers } from './dialogHandlers';
+import { setupJsonHandlers } from './ipc/jsonHandler';
+import { setupDialogHandlers } from './ipc/dialogHandlers';
 import { createTray } from './ipc/trayHandler'; // Importa o handler do Tray
+import { setupJsonReader } from './ipc/setupJsonReader';
+import { setupScheduler, setMainWindow } from './ipc/Scheduler'; // Importa setupScheduler e setMainWindow
 
 let mainWindow;
 
@@ -37,6 +39,7 @@ function createWindow() {
     resizable: false, // Bloqueia o redimensionamento da janela
   });
 
+  // Quando a janela estiver pronta para ser exibida
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
   });
@@ -49,40 +52,7 @@ function createWindow() {
     }
   });
 
-  // Configura os manipuladores de eventos
-  setupJsonHandlers();
-  setupDialogHandlers(mainWindow);
-
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
-    return { action: 'deny' };
-  });
-
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
-  }
-
-  // Intercept navigation in production to handle React routes
-  mainWindow.webContents.on('will-navigate', (event, url) => {
-    if (!url.startsWith('http')) {
-      event.preventDefault();
-      mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
-    }
-  });
-
-  // Intercept external links
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('http')) {
-      shell.openExternal(url);
-      return { action: 'deny' };
-    }
-    return { action: 'allow' };
-  });
-
+  // Retorna a janela criada
   return mainWindow;
 }
 
@@ -99,6 +69,15 @@ app.whenReady().then(() => {
   // Cria a janela principal
   const mainWindow = createWindow();
 
+  // Passa a referência da janela principal para o scheduler
+  setMainWindow(mainWindow);
+
+  // Configura os manipuladores de eventos
+  setupJsonHandlers();
+  setupJsonReader();
+  setupDialogHandlers(mainWindow);
+  setupScheduler(); // Inicializa o agendador de alarmes
+
   // Cria o Tray (bandeja de sistema)
   createTray(mainWindow, app);
 
@@ -106,6 +85,13 @@ app.whenReady().then(() => {
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  // Carrega a interface principal
+  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
+  } else {
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
+  }
 });
 
 // Fecha o aplicativo quando todas as janelas estão fechadas (exceto no macOS)

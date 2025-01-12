@@ -20,6 +20,9 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "howler": "^2.2.4",
+    "node-schedule": "^2.1.1",
+    "play-sound": "^1.1.6",
     "react-router-dom": "^7.1.1",
     "react-time-picker": "^7.0.0"
   },

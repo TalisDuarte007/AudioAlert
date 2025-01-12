@@ -31,7 +31,7 @@
     display: inline-block;
   }
   
-  .tooltip {
+.tooltip {
     position: absolute;
     bottom: -30px; /* Ajuste a posição conforme necessário */
     left: 50%;
@@ -44,4 +44,4 @@
     white-space: nowrap;
     opacity: 0.9;
     z-index: 10;
-  }
+}

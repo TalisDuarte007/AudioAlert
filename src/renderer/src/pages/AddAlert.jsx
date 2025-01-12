@@ -9,7 +9,7 @@ import WeekdaySelector from "../components/WeekdaySelector/WeekdaySelector";
 
 export default function AddAlert() {
   const [time, setTime] = useState({ time: '10:00', audioPath: '' });
-  const [selectedDays, setSelectedDays] = useState(['']);
+  const [selectedDays, setSelectedDays] = useState([]);
 
   const isSaveDisabled = !time.audioPath || selectedDays.length === 0;
 

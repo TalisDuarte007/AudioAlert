@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { join } from 'path';
 import { ipcMain } from 'electron';
-import '../../src/renderer/src/utils/alarms_config.json'
 
 export function setupJsonHandlers() {
   ipcMain.on('save-to-json', (event, time) => {
