@@ -1,6 +1,8 @@
 import schedule from 'node-schedule';
 import fs from 'fs';
 import { join } from 'path';
+import path from 'path';
+
 
 const filePath = join(__dirname, '../../src/renderer/src/utils/alarms_config.json');
 let jobs = [];
@@ -24,13 +26,21 @@ export function setMainWindow(window) {
 
 // Função para enviar o áudio para reprodução no front-end
 function playAudioInAppBackend(audioPath) {
-  if (mainWindow) {
-    console.log(`Solicitando reprodução no front-end: ${audioPath}`);
-    mainWindow.webContents.send('play-audio', audioPath);
+  const fileName = path.basename(audioPath).trim(); // Extrai apenas o nome do arquivo
+  if (fs.existsSync(audioPath)) {
+    console.log(`Arquivo existe no backend: ${audioPath}`);
+    if (mainWindow) {
+      console.log(`Enviando para o front-end: ${fileName}`);
+      mainWindow.webContents.send('play-audio', fileName);
+    } else {
+      console.error('Erro: mainWindow não está definida!');
+    }
   } else {
-    console.error('Erro: mainWindow não está definida!');
+    console.error(`Erro: Caminho do áudio não encontrado: ${audioPath}`);
   }
 }
+
+
 
 export function setupScheduler() {
   console.log('Inicializando o Scheduler...');

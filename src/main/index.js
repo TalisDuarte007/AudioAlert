@@ -1,5 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
+import path from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { setupJsonHandlers } from './ipc/jsonHandler';
@@ -33,12 +34,30 @@ function createWindow() {
       contextIsolation: true,
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
+      enableRemoteModule: false,
+      webSecurity: true,
     },
     minimizable: false, // Desabilita o botão de minimizar
     maximizable: false, // Desabilita o botão de maximizar
     resizable: false, // Bloqueia o redimensionamento da janela
   });
 
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self' 'unsafe-inline' 'unsafe-eval' file: data:; " +
+          "media-src 'self' file: data:; " +
+          "img-src 'self' file: data:; " +
+          "style-src 'self' 'unsafe-inline'; " +
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+        ],
+      },
+    });
+  });
+  
+  
   // Quando a janela estiver pronta para ser exibida
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -77,6 +96,7 @@ app.whenReady().then(() => {
   setupJsonReader();
   setupDialogHandlers(mainWindow);
   setupScheduler(); // Inicializa o agendador de alarmes
+
 
   // Cria o Tray (bandeja de sistema)
   createTray(mainWindow, app);

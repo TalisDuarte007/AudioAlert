@@ -1,23 +1,22 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import AddAlert from './pages/AddAlert'
-import Home from './pages/Home'
-import ViewAlerts from './pages/ViewAlerts'
+import AddAlert from './pages/AddAlert';
+import Home from './pages/Home';
+import ViewAlerts from './pages/ViewAlerts';
 import AddRandomAlert from './pages/AddRandomAlert';
 import { useEffect } from 'react';
- import{ playAudioInApp } from '../../../src/main/ipc/Howler'; // Função que usa Howler.js
 
 export default function AppRoutes() {
-
   useEffect(() => {
-    // Escuta mensagens do backend para tocar o áudio
-    if (window.audioApi) {
-      window.audioApi.playAudio((audioPath) => {
-        playAudioInApp(audioPath);
-      });
+    console.log('Testando API de áudio no window:');
+    console.log(window.audioAlertApi);
+  
+    if (window.audioAlertApi) {
+      window.audioAlertApi.playAudio('FORTUNA.mp3');
     } else {
-      console.error('API de áudio não está disponível no front-end.');
+      console.error('API de áudio não carregada!');
     }
   }, []);
+  
 
   return (
     <Router>
@@ -28,5 +27,5 @@ export default function AppRoutes() {
         <Route path="/viewAlerts" element={<ViewAlerts />} />
       </Routes>
     </Router>
-  )
+  );
 }

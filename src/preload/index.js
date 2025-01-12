@@ -7,18 +7,21 @@ const api = {}
 contextBridge.exposeInMainWorld('audioAlertApi', {
   saveToJSON: (data) => ipcRenderer.send('save-to-json', data),
   readJson: () => ipcRenderer.invoke('read-json'),
+  playAudio: (audioPath) => {
+    const audioUrl = new URL(`/audios/${audioPath.trim()}`, window.location.origin).href;
+    console.log('Tentando reproduzir áudio de:', audioUrl);
+  
+    const audioPlayer = new Audio(audioUrl);
+    audioPlayer.play().catch((error) => {
+      console.error('Erro ao reproduzir áudio:', error);
+    });
+  },
+  
 });
 
 contextBridge.exposeInMainWorld('openDialogApi', {
   selectFile: () => ipcRenderer.invoke('dialog:openFile'), // Usamos `invoke` para enviar e receber a resposta
 });
-
-contextBridge.exposeInMainWorld('audioApi', {
-  playAudio: (callback) => ipcRenderer.on('play-audio', (event, audioPath) => {
-    callback(audioPath);
-  }),
-});
-
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

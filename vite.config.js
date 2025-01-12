@@ -21,4 +21,11 @@ export default defineConfig({
       ],
     },
   },
+  server: {
+    headers: {
+      'Content-Security-Policy': "default-src 'self' 'unsafe-inline' 'unsafe-eval' file:;",
+    },
+  },
+  publicDir: 'public', 
 });
+
