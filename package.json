@@ -24,7 +24,8 @@
     "node-schedule": "^2.1.1",
     "play-sound": "^1.1.6",
     "react-router-dom": "^7.1.1",
-    "react-time-picker": "^7.0.0"
+    "react-time-picker": "^7.0.0",
+    "speaker": "^0.5.5"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",

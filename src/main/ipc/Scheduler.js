@@ -1,7 +1,7 @@
 import schedule from 'node-schedule';
 import fs from 'fs';
 import { join } from 'path';
-import path from 'path';
+import { playAudio } from './Speaker';
 
 
 const filePath = join(__dirname, '../../src/renderer/src/utils/alarms_config.json');
@@ -24,26 +24,8 @@ export function setMainWindow(window) {
   mainWindow = window;
 }
 
-// Função para enviar o áudio para reprodução no front-end
-function playAudioInAppBackend(audioPath) {
-  const fileName = path.basename(audioPath).trim(); // Extrai apenas o nome do arquivo
-  if (fs.existsSync(audioPath)) {
-    console.log(`Arquivo existe no backend: ${audioPath}`);
-    if (mainWindow) {
-      console.log(`Enviando para o front-end: ${fileName}`);
-      mainWindow.webContents.send('play-audio', fileName);
-    } else {
-      console.error('Erro: mainWindow não está definida!');
-    }
-  } else {
-    console.error(`Erro: Caminho do áudio não encontrado: ${audioPath}`);
-  }
-}
-
-
-
 export function setupScheduler() {
-  console.log('Inicializando o Scheduler...');
+  // console.log('Inicializando o Scheduler...');
 
   // Gera expressão cron para alarmes regulares
   const generateCronExpression = (time, day) => {
@@ -55,30 +37,33 @@ export function setupScheduler() {
   const loadPromoAlarms = (promo) => {
     promo.timeRanges.forEach((range) => {
       const cronDays = promo.days.map((day) => daysMap[day]).join(',');
-
+  
       const intervalJob = schedule.scheduleJob(`*/${promo.interval} * * * ${cronDays}`, () => {
         const now = new Date();
         const currentTime = now.toTimeString().slice(0, 5);
-
+  
         if (currentTime >= range.start && currentTime <= range.end) {
-          playAudioInAppBackend(promo.audioPath);
+          // console.log(`Tocando promo alarm: ${promo.audioPath}`);
+          playAudio
+      promo.audioPath); // Corrigido para passar o caminho do áudio
         } else {
-          console.log(
-            `Fora do intervalo permitido (${range.start} - ${range.end}): ${currentTime}`
-          );
+          // console.log(
+          //   `Fora do intervalo permitido (${range.start} - ${range.end}): ${currentTime}`
+          // );
         }
       });
-
+  
       if (intervalJob) jobs.push(intervalJob);
     });
   };
+  
 
   // Agenda alarmes regulares
   const loadAlarms = () => {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      console.log('JSON carregado:', data);
-
+      // console.log('JSON carregado:', data);
+  
       // Cancela todos os jobs anteriores
       jobs.forEach((job) => {
         if (job && typeof job.cancel === 'function') {
@@ -86,39 +71,42 @@ export function setupScheduler() {
         }
       });
       jobs = [];
-
+  
       // Agenda alarmes regulares
       if (data.alarms && data.alarms.length > 0) {
         data.alarms.forEach((alarm) => {
           alarm.days.forEach((day) => {
             const cronExpression = generateCronExpression(alarm.time, day);
             const job = schedule.scheduleJob(cronExpression, () => {
-              playAudioInAppBackend(alarm.audioPath); // Corrigido para usar alarm.audioPath
+              // console.log(`Tocando alarme regular: ${alarm.audioPath}`);
+              playAudio
+          alarm.audioPath); // Usa "alarm.audioPath"
             });
             if (job) jobs.push(job);
           });
         });
       } else {
-        console.log('Nenhum alarme regular encontrado.');
+        // console.log('Nenhum alarme regular encontrado.');
       }
-
+  
       // Agenda promo_alarms
       if (data.promo_alarms && data.promo_alarms.length > 0) {
         data.promo_alarms.forEach((promo) => loadPromoAlarms(promo));
       } else {
-        console.log('Nenhum promo alarm encontrado.');
+        // console.log('Nenhum promo alarm encontrado.');
       }
-
+  
       console.log('Alarmes carregados e agendados com sucesso!');
     } catch (error) {
       console.error('Erro ao carregar os alarmes:', error);
     }
   };
+  
 
   // Observa mudanças no arquivo JSON
   fs.watch(filePath, (eventType) => {
     if (eventType === 'change') {
-      console.log('Arquivo JSON atualizado. Recarregando alarmes...');
+      // console.log('Arquivo JSON atualizado. Recarregando alarmes...');
       loadAlarms();
     }
   });

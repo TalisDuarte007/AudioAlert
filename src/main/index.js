@@ -1,6 +1,5 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
-import path from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { setupJsonHandlers } from './ipc/jsonHandler';
@@ -8,6 +7,7 @@ import { setupDialogHandlers } from './ipc/dialogHandlers';
 import { createTray } from './ipc/trayHandler'; // Importa o handler do Tray
 import { setupJsonReader } from './ipc/setupJsonReader';
 import { setupScheduler, setMainWindow } from './ipc/Scheduler'; // Importa setupScheduler e setMainWindow
+import { playAudio } from './ipc/Speaker';
 
 let mainWindow;
 
@@ -96,6 +96,7 @@ app.whenReady().then(() => {
   setupJsonReader();
   setupDialogHandlers(mainWindow);
   setupScheduler(); // Inicializa o agendador de alarmes
+  playAudio()
 
 
   // Cria o Tray (bandeja de sistema)
@@ -121,5 +122,3 @@ app.on('window-all-closed', () => {
   }
 });
 
-// IPC Teste
-ipcMain.on('ping', () => console.log('pong'));

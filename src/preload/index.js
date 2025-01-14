@@ -7,16 +7,6 @@ const api = {}
 contextBridge.exposeInMainWorld('audioAlertApi', {
   saveToJSON: (data) => ipcRenderer.send('save-to-json', data),
   readJson: () => ipcRenderer.invoke('read-json'),
-  playAudio: (audioPath) => {
-    const audioUrl = new URL(`/audios/${audioPath.trim()}`, window.location.origin).href;
-    console.log('Tentando reproduzir áudio de:', audioUrl);
-  
-    const audioPlayer = new Audio(audioUrl);
-    audioPlayer.play().catch((error) => {
-      console.error('Erro ao reproduzir áudio:', error);
-    });
-  },
-  
 });
 
 contextBridge.exposeInMainWorld('openDialogApi', {
