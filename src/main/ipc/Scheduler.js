@@ -44,8 +44,7 @@ export function setupScheduler() {
   
         if (currentTime >= range.start && currentTime <= range.end) {
           // console.log(`Tocando promo alarm: ${promo.audioPath}`);
-          playAudio
-      promo.audioPath); // Corrigido para passar o caminho do áudio
+          playAudio(promo.audioPath); // Corrigido para passar o caminho do áudio
         } else {
           // console.log(
           //   `Fora do intervalo permitido (${range.start} - ${range.end}): ${currentTime}`
@@ -79,8 +78,7 @@ export function setupScheduler() {
             const cronExpression = generateCronExpression(alarm.time, day);
             const job = schedule.scheduleJob(cronExpression, () => {
               // console.log(`Tocando alarme regular: ${alarm.audioPath}`);
-              playAudio
-          alarm.audioPath); // Usa "alarm.audioPath"
+              playAudio(alarm.audioPath); // Usa "alarm.audioPath"
             });
             if (job) jobs.push(job);
           });
