@@ -1,57 +1,61 @@
 {
   "alarms": [
     {
-      "time": "20:55",
-      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.mp3",
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
       "days": [
-        "Seg",
-        "Ter",
-        "Qua",
-        "Qui",
+        "Dom"
+      ]
+    },
+    {
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
+      "days": [
+        "Dom"
+      ]
+    },
+    {
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
+      "days": [
+        "Dom"
+      ]
+    },
+    {
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
+      "days": [
         "Sex"
       ]
     },
     {
-      "time": "20:34",
-      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.mp3",
-      "days": [
-        "Ter"
-      ]
-    },
-    {
-      "time": "20:36",
-      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.mp3",
-      "days": [
-        "Ter"
-      ]
-    },
-    {
-      "time": "20:39",
+      "time": "10:00",
       "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
       "days": [
-        "Ter"
-      ]
-    },
-    {
-      "time": "20:44",
-      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
-      "days": [
-        "Ter"
-      ]
-    },
-    {
-      "time": "20:45",
-      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
-      "days": [
-        "Ter"
-      ]
-    },
-    {
-      "time": "20:46",
-      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
-      "days": [
-        "Ter",
         "Seg"
+      ]
+    },
+    {
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
+      "days": [
+        "Sex",
+        "Ter"
+      ]
+    },
+    {
+      "time": "22:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
+      "days": [
+        "Dom",
+        "Seg"
+      ]
+    },
+    {
+      "time": "10:00",
+      "audioPath": "E:\\Dev\\AudioAlert\\public\\audios\\FORTUNA.wav",
+      "days": [
+        "Dom"
       ]
     }
   ],

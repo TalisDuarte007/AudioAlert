@@ -3,8 +3,6 @@ import { join } from 'path';
 import { ipcMain } from 'electron';
 
 export function setupJsonReader() {
-  console.log('Registrando handler para read-json...');
-
   ipcMain.handle('read-json', async () => {
     const filePath = join(__dirname, '../../src/renderer/src/utils/alarms_config.json');
     console.log(filePath)

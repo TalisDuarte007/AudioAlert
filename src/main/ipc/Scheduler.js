@@ -34,34 +34,44 @@ export function setupScheduler() {
   };
 
   // Agenda promo_alarms
-  const loadPromoAlarms = (promo) => {
-    promo.timeRanges.forEach((range) => {
-      const cronDays = promo.days.map((day) => daysMap[day]).join(',');
+  // const loadPromoAlarms = (promo) => {
+  //   promo.timeRanges.forEach((range) => {
+  //     const cronDays = promo.days.map((day) => daysMap[day]).join(',');
   
-      const intervalJob = schedule.scheduleJob(`*/${promo.interval} * * * ${cronDays}`, () => {
-        const now = new Date();
-        const currentTime = now.toTimeString().slice(0, 5);
+  //     const intervalJob = schedule.scheduleJob(`*/${promo.interval} * * * ${cronDays}`, () => {
+  //       const now = new Date();
+  //       const currentTime = now.toTimeString().slice(0, 5);
   
-        if (currentTime >= range.start && currentTime <= range.end) {
-          // console.log(`Tocando promo alarm: ${promo.audioPath}`);
-          playAudio(promo.audioPath); // Corrigido para passar o caminho do áudio
-        } else {
-          // console.log(
-          //   `Fora do intervalo permitido (${range.start} - ${range.end}): ${currentTime}`
-          // );
-        }
-      });
+  //       if (currentTime >= range.start && currentTime <= range.end) {
+  //         // console.log(`Tocando promo alarm: ${promo.audioPath}`);
+  //         playAudio(promo.audioPath); // Corrigido para passar o caminho do áudio
+  //       } else {
+  //         // console.log(
+  //         //   `Fora do intervalo permitido (${range.start} - ${range.end}): ${currentTime}`
+  //         // );
+  //       }
+  //     });
   
-      if (intervalJob) jobs.push(intervalJob);
-    });
-  };
+  //     if (intervalJob) jobs.push(intervalJob);
+  //   });
+  // };
   
 
   // Agenda alarmes regulares
   const loadAlarms = () => {
     try {
-      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      // console.log('JSON carregado:', data);
+      const fileContent = fs.readFileSync(filePath, 'utf8').trim(); // Lê o conteúdo e remove espaços extras
+      console.log(`Caminho do arquivo JSON: ${filePath}`);
+
+  
+      // Verifica se o conteúdo está vazio
+      if (!fileContent) {
+        console.error('Erro: O arquivo JSON está vazio.');
+        return;
+      }
+  
+      // Faz o parse do conteúdo
+      const data = JSON.parse(fileContent);
   
       // Cancela todos os jobs anteriores
       jobs.forEach((job) => {
@@ -77,35 +87,38 @@ export function setupScheduler() {
           alarm.days.forEach((day) => {
             const cronExpression = generateCronExpression(alarm.time, day);
             const job = schedule.scheduleJob(cronExpression, () => {
-              // console.log(`Tocando alarme regular: ${alarm.audioPath}`);
               playAudio(alarm.audioPath); // Usa "alarm.audioPath"
             });
             if (job) jobs.push(job);
           });
         });
       } else {
-        // console.log('Nenhum alarme regular encontrado.');
-      }
-  
-      // Agenda promo_alarms
-      if (data.promo_alarms && data.promo_alarms.length > 0) {
-        data.promo_alarms.forEach((promo) => loadPromoAlarms(promo));
-      } else {
-        // console.log('Nenhum promo alarm encontrado.');
+        console.log('Nenhum alarme regular encontrado.');
       }
   
       console.log('Alarmes carregados e agendados com sucesso!');
     } catch (error) {
-      console.error('Erro ao carregar os alarmes:', error);
+      if (error instanceof SyntaxError) {
+        console.error('Erro ao carregar os alarmes: O JSON está malformado.', error.message);
+      } else {
+        console.error('Erro ao carregar os alarmes:', error);
+      }
     }
   };
   
-
+  
+  let watchTimeout; // Variável para o temporizador
   // Observa mudanças no arquivo JSON
   fs.watch(filePath, (eventType) => {
     if (eventType === 'change') {
-      // console.log('Arquivo JSON atualizado. Recarregando alarmes...');
-      loadAlarms();
+
+      // Cancela o temporizador anterior, se ainda estiver ativo
+      clearTimeout(watchTimeout);
+  
+      // Aguarda 100ms antes de recarregar os alarmes
+      watchTimeout = setTimeout(() => {
+        loadAlarms();
+      }, 100); // Ajuste o intervalo conforme necessário
     }
   });
 
